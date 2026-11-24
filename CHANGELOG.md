@@ -9,6 +9,25 @@ must move the minor version.
 
 ## Unreleased
 
+### Breaking
+
+- **`BuiltinTarget` gains `RustModels`.** Rust code that matches `BuiltinTarget` exhaustively needs
+  an arm. The host/worker protocol is now version 10, so a worker and CLI cannot silently disagree
+  about the stage-plan shape.
+
+### Added
+
+- `RustModels` target: Rust types with Serde serialization for the schemas its `.model_root(...)`s
+  reach, or every schema with `.all_models()`, written as one module tree whose root is `mod.rs`
+  (compact, or one file per model with `.split_files()` / a split `SdkFileLayout`). Field presence
+  and nullability follow the graph's direction rules: a required key is `T`, a required nullable key
+  `Option<T>`, an optional key `Option<T>` that refuses `null`, and an optional nullable key
+  `Option<Option<T>>` that keeps absent, `null` and a value apart. Wire names are kept exactly with
+  `#[serde(rename)]` while Rust names are escaped and numbered where they collide. A union, a byte
+  string, an inline object or enum, an integer or float of a width Rust lacks, a map keyed by
+  anything but a string, a self-referential alias, and a colliding or reserved Rust type name fail
+  generation with one error naming every schema and field. See `docs/sdk/rust-models.md`.
+
 ## 0.23.0 — 2026-11-12
 
 ### Breaking
