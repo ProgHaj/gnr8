@@ -67,7 +67,7 @@ dependencies = [
 
 [[package]]
 name = "gnr8"
-version = "0.23.0"
+version = "0.23.0-rust-models.1"
 dependencies = [
  "blake3",
  "serde",
